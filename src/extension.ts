@@ -1,45 +1,51 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
-const workspaceNoteKey = 'knewt.workspaceNote';
+const workspaceNoteKey = "knewt.workspaceNote";
 
 export function activate(context: vscode.ExtensionContext) {
-	const provider = new KnewtNotesViewProvider(context);
+  const provider = new KnewtNotesViewProvider(context);
 
-	context.subscriptions.push(
-		vscode.window.registerWebviewViewProvider(KnewtNotesViewProvider.viewType, provider),
-	);
+  context.subscriptions.push(
+    vscode.window.registerWebviewViewProvider(
+      KnewtNotesViewProvider.viewType,
+      provider,
+    ),
+  );
 }
 
 export function deactivate() {}
 
 class KnewtNotesViewProvider implements vscode.WebviewViewProvider {
-	public static readonly viewType = 'knewt.notesView';
+  public static readonly viewType = "knewt.notesView";
 
-	public constructor(private readonly context: vscode.ExtensionContext) {}
+  public constructor(private readonly context: vscode.ExtensionContext) {}
 
-	public resolveWebviewView(webviewView: vscode.WebviewView): void {
-		webviewView.webview.options = {
-			enableScripts: true,
-		};
+  public resolveWebviewView(webviewView: vscode.WebviewView): void {
+    webviewView.webview.options = {
+      enableScripts: true,
+    };
 
-		webviewView.webview.html = this.getHtml(webviewView.webview);
+    webviewView.webview.html = this.getHtml(webviewView.webview);
 
-		webviewView.webview.onDidReceiveMessage(
-			async (message: NoteMessage) => {
-				if (message.type === 'saveNote') {
-					await this.context.workspaceState.update(workspaceNoteKey, message.text);
-				}
-			},
-			undefined,
-			this.context.subscriptions,
-		);
-	}
+    webviewView.webview.onDidReceiveMessage(
+      async (message: NoteMessage) => {
+        if (message.type === "saveNote") {
+          await this.context.workspaceState.update(
+            workspaceNoteKey,
+            message.text,
+          );
+        }
+      },
+      undefined,
+      this.context.subscriptions,
+    );
+  }
 
-	private getHtml(webview: vscode.Webview): string {
-		const note = this.context.workspaceState.get<string>(workspaceNoteKey, '');
-		const nonce = getNonce();
+  private getHtml(webview: vscode.Webview): string {
+    const note = this.context.workspaceState.get<string>(workspaceNoteKey, "");
+    const nonce = getNonce();
 
-		return /* html */ `<!DOCTYPE html>
+    return /* html */ `<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -106,28 +112,29 @@ class KnewtNotesViewProvider implements vscode.WebviewViewProvider {
 	</script>
 </body>
 </html>`;
-	}
+  }
 }
 
 type NoteMessage = {
-	type: 'saveNote';
-	text: string;
+  type: "saveNote";
+  text: string;
 };
 
 function escapeHtml(value: string): string {
-	return value
-		.replace(/&/g, '&amp;')
-		.replace(/</g, '&lt;')
-		.replace(/>/g, '&gt;');
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
 
 function getNonce(): string {
-	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	let text = '';
+  const possible =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let text = "";
 
-	for (let i = 0; i < 32; i += 1) {
-		text += possible.charAt(Math.floor(Math.random() * possible.length));
-	}
+  for (let i = 0; i < 32; i += 1) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
 
-	return text;
+  return text;
 }
