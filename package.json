@@ -10,7 +10,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:knewt.notesView"
+    "onView:knewt.notesView",
+    "onFileSystem:knewt"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -27,17 +28,83 @@
       "knewt": [
         {
           "id": "knewt.notesView",
-          "name": "Notes",
-          "type": "webview"
+          "name": "Notes"
         }
       ]
     },
     "commands": [
       {
-        "command": "knewt.notesView.focus",
-        "title": "Focus Knewt Notes"
+        "command": "knewt.newNote",
+        "title": "New Note",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "knewt.newFolder",
+        "title": "New Folder",
+        "icon": "$(new-folder)"
+      },
+      {
+        "command": "knewt.openNote",
+        "title": "Open Note"
+      },
+      {
+        "command": "knewt.renameItem",
+        "title": "Rename",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "knewt.deleteItem",
+        "title": "Delete",
+        "icon": "$(trash)"
       }
-    ]
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "knewt.newNote",
+          "when": "view == knewt.notesView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "knewt.newFolder",
+          "when": "view == knewt.notesView",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "knewt.openNote",
+          "when": "view == knewt.notesView && viewItem == knewtNote",
+          "group": "inline@1"
+        },
+        {
+          "command": "knewt.renameItem",
+          "when": "view == knewt.notesView",
+          "group": "inline@2"
+        },
+        {
+          "command": "knewt.deleteItem",
+          "when": "view == knewt.notesView",
+          "group": "inline@3"
+        },
+        {
+          "command": "knewt.newNote",
+          "when": "view == knewt.notesView && viewItem == knewtFolder",
+          "group": "navigation@1"
+        },
+        {
+          "command": "knewt.newFolder",
+          "when": "view == knewt.notesView",
+          "group": "navigation@2"
+        }
+      ]
+    }
+  },
+  "capabilities": {
+    "virtualWorkspaces": true,
+    "untrustedWorkspaces": {
+      "supported": true
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
