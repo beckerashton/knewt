@@ -9,13 +9,33 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onView:knewt.notesView"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "knewt",
+          "title": "Knewt",
+          "icon": "media/knewt.svg"
+        }
+      ]
+    },
+    "views": {
+      "knewt": [
+        {
+          "id": "knewt.notesView",
+          "name": "Notes",
+          "type": "webview"
+        }
+      ]
+    },
     "commands": [
       {
-        "command": "knewt.helloWorld",
-        "title": "Hello World"
+        "command": "knewt.notesView.focus",
+        "title": "Focus Knewt Notes"
       }
     ]
   },

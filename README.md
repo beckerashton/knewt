@@ -1,71 +1,47 @@
-# knewt README
+# Knewt
 
-This is the README for your extension "knewt". After writing up a brief description, we recommend including the following sections.
+Knewt is a VS Code extension for workspace notes that stay outside the project files. The goal is to let notes sit beside code without changing source files or adding git-visible project artifacts by default.
 
-## Features
+## Current Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Adds a dedicated **Knewt** icon to the VS Code Activity Bar.
+- Provides a **Notes** panel with one plaintext workspace note.
+- Autosaves note text while editing.
+- Stores the current note through VS Code extension state, not in the workspace folder.
 
-For example if there is an image subfolder under your extension project workspace:
+## Usage
 
-\!\[feature X\]\(images/feature-x.png\)
+1. Open the Knewt icon in the Activity Bar.
+2. Type notes in the **Notes** panel.
+3. Leave the panel or switch files as needed; note text is autosaved.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Development
 
-## Requirements
+Install dependencies:
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+```sh
+npm install
+```
 
-## Extension Settings
+Compile the extension:
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+```sh
+npm run compile
+```
 
-For example:
+Run the extension from VS Code with the generated extension launch configuration.
 
-This extension contributes the following settings:
+## Planned Phases
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+1. Plaintext notes in a sidebar or Activity Bar panel.
+2. File-linked notes that automatically follow the active editor.
+3. Section-linked notes for symbols such as functions and variables.
+4. Inline notes rendered at code lines without editing the source file.
+5. Note search.
+6. Note organization.
 
-## Known Issues
+## Design Constraints
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- Knewt should not modify workspace files for normal note behavior.
+- Storage and UI choices should leave room for file links, symbol links, inline decorations, search, and organization.
+- Debug or placeholder behavior should be clearly marked and easy to remove.
